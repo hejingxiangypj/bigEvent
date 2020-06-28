@@ -95,17 +95,29 @@
             class="layui-input">
         </div>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">分类类别</label>
-        <div class="layui-input-block">
-          <div class="layui-unselect layui-form-select">
-            <div class="layui-select-title">
-              <input type="text" placeholder="所有分类" value="" readonly="" class="layui-input layui-unselect">
-              <i class="layui-edge"></i>
-            </div>
-          </div>
-        </div>
+    </form>
+
+    <form class="layui-form" id="form-search">
+      <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">文章分类</label>
       </div>
+      <div class="layui-form-item layui-inline">
+        <select name="cate_id">
+          <option value="">所有分类</option>
+          <option value="1">可乐不可口</option>
+          <option value="2">朝花夕拾</option>
+          <option value="2374">图书</option>
+          <option value="2379">游戏</option>
+          <option value="2380">体育</option>
+          <option value="2382">动物世界</option>
+          <option value="2384">动漫</option>
+          <option value="2391">王真真在线cpdd</option>
+          <option value="2392">军事</option>
+          <option value="2394">桃花源一日游</option>
+        </select>
+      </div>
+    </form>
+    <form class="layui-form" id="form-edit" lay-filter="form-edit">
       <div class="layui-form-item">
         <div class="layui-input-block">
           <button class="layui-btn" lay-submit lay-filter="formDemo">确认修改</button>

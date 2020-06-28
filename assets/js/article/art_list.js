@@ -27,7 +27,7 @@ $(function () {
   // 需要将请求参数对象提交到服务器
   var q = {
     pagenum: 1, // 页码值，默认请求第一页的数据
-    pagesize: 2, // 每页显示几条数据，默认每页显示2条
+    pagesize: 3, // 每页显示几条数据，默认每页显示2条
     cate_id: '', // 文章分类的 Id
     state: '' // 文章的发布状态
   };
@@ -62,6 +62,7 @@ $(function () {
       method: 'GET',
       url: '/my/article/cates',
       success: function (res) {
+        console.log(res);
         if (res.status !== 0) {
           return layer.msg('获取分类数据失败！');
         }
@@ -97,14 +98,12 @@ $(function () {
       curr: q.pagenum, // 设置默认被选中的分页
       layout: ['count', 'limit', 'prev', 'page', 'next', 'skip'],
       limits: [2, 3, 5, 10],
-      // 分页发生切换的时候，触发 jump 回调
-      // 触发 jump 回调的方式有两种：
+      // 分页发生切换的时候，触发 jump 回调.触发 jump 回调的方式有两种：
       // 1. 点击页码的时候，会触发 jump 回调
       // 2. 只要调用了 laypage.render() 方法，就会触发 jump 回调
       jump: function (obj, first) {
         // 可以通过 first 的值，来判断是通过哪种方式，触发的 jump 回调
-        // 如果 first 的值为 true，证明是方式2触发的
-        // 否则就是方式1触发的
+        // 如果 first 的值为 true，证明是方式2触发的.否则就是方式1触发的
         console.log(first);
         console.log(obj.curr);
         // 把最新的页码值，赋值到 q 这个查询参数对象中
@@ -157,18 +156,20 @@ $(function () {
     });
   });
 
+
   // 修改文章分类与标题
   // 通过代理的形式，为 btn-edit 按钮绑定点击事件
   var indexEdit = null
   $('tbody').on('click', '.btn-edit', function () {
-    initCate();
     // 弹出一个修改文章标题与分类信息的层
     indexEdit = layer.open({
       type: 1,
-      area: ['500px', '250px'],
+      area: ['600px', '500px'],
       title: '修改文章标题与分类',
       content: $('#dialog-edit').html()
     });
+    // 调用渲染类的函数，重新将类别渲染到弹出层
+    initCate();
 
     var id = $(this).attr('data-id');
     // 发起请求获取对应分类的数据
@@ -182,29 +183,8 @@ $(function () {
         }
         console.log(res);
         form.val('form-edit', res.data);
-
-        // $('tbody').html(htmlStr);
-        // // 调用渲染分页的方法
-        // renderPage(res.total);
-
       }
     });
-
-    $.ajax({
-      method: 'GET',
-      url: '/my/article/cates',
-      success: function (res) {
-        if (res.status !== 0) {
-          return layer.msg('获取分类数据失败！');
-        }
-        // 调用模板引擎渲染分类的可选项
-        var htmlStr = template('tpl-cate', res);
-        $('[name=cate_id]').html(htmlStr);
-        // 通过 layui 重新渲染表单区域的UI结构
-        form.render();
-      }
-    });
-
 
     // 通过代理的形式，为修改分类的表单绑定 submit 事件
     $('body').on('submit', '#form-edit', function (e) {
@@ -214,6 +194,7 @@ $(function () {
         url: '/my/article/updatecate',
         data: $(this).serialize(),
         success: function (res) {
+          // console.log(res);
           if (res.status !== 0) {
             return layer.msg('更新分类数据失败！');
           };
